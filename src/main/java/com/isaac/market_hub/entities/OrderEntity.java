@@ -30,4 +30,7 @@ public class OrderEntity {
     @JoinColumn(name = "client_id")
     private UserEntity client;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private PaymentEntity payment;
+
 }
