@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,4 +35,12 @@ public class ProductEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<CategoryEntity> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
+
+
+    public List<OrderEntity> getOrders() {
+        return items.stream().map(OrderItem::getOrder).toList();
+    }
 }

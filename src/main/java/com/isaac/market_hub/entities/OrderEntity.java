@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -32,5 +35,12 @@ public class OrderEntity {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private PaymentEntity payment;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
+
+    public List<ProductEntity> getProducts() {
+        return items.stream().map(OrderItem::getProduct).toList();
+    }
 
 }
