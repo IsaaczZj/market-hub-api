@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,4 +24,16 @@ public class CategoryEntity {
 
     @ManyToMany(mappedBy = "categories")
     private Set<ProductEntity> products = new HashSet<>();
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof CategoryEntity that)) return false;
+
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

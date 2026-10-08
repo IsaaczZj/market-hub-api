@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -30,4 +31,15 @@ public class UserEntity {
     private List<OrderEntity> orders = new ArrayList<>();
 
 
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof UserEntity that)) return false;
+
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
