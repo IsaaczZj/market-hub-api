@@ -27,10 +27,22 @@ public class ProductService {
         return new ProductDTO(product);
     }
 
+    @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
         Page<ProductEntity> products = productRepository.findAll(pageable);
 
         return products.map(ProductDTO::new);
 
+    }
+
+    @Transactional
+    public ProductDTO create(ProductDTO dto) {
+        ProductEntity product = new ProductEntity();
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setImgUrl(dto.getImgUrl());
+        product.setPrice(dto.getPrice());
+
+        return new ProductDTO(productRepository.save(product));
     }
 }
