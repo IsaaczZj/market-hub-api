@@ -74,6 +74,7 @@ public class ProductService {
 
     @Transactional
     public void delete(Long id) {
+        ProductEntity product = productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
         productRepository.deleteById(id);
     }
 }
