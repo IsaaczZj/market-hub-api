@@ -4,10 +4,14 @@ import com.isaac.market_hub.dtos.ProductDTO;
 import com.isaac.market_hub.entities.ProductEntity;
 import com.isaac.market_hub.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +25,12 @@ public class ProductService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
 
         return new ProductDTO(product);
+    }
+
+    public Page<ProductDTO> findAll(Pageable pageable) {
+        Page<ProductEntity> products = productRepository.findAll(pageable);
+
+        return products.map(ProductDTO::new);
+
     }
 }
