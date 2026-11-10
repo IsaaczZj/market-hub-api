@@ -45,4 +45,30 @@ public class ProductService {
 
         return new ProductDTO(productRepository.save(product));
     }
+
+    @Transactional
+    public ProductDTO update(Long id, ProductDTO dto) {
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+
+        if (dto.getName() != null) {
+            product.setName(dto.getName());
+        }
+
+        if (dto.getDescription() != null) {
+            product.setDescription(dto.getDescription());
+        }
+
+        if (dto.getPrice() != null) {
+            product.setPrice(dto.getPrice());
+        }
+
+        if (dto.getImgUrl() != null) {
+            product.setImgUrl(dto.getImgUrl());
+        }
+
+        product = productRepository.save(product);
+
+        return new ProductDTO(product);
+    }
 }
