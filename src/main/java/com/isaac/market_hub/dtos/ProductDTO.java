@@ -1,6 +1,8 @@
 package com.isaac.market_hub.dtos;
 
 import com.isaac.market_hub.entities.ProductEntity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class ProductDTO {
     private Long id;
 
+    @NotBlank(message = "Escreva um nome")
+    @Size(min = 10, max = 100, message = "O nome do produto deve ter entre 10 e 100 caracteres")
     private String name;
     private String description;
     private Double price;

@@ -2,6 +2,7 @@ package com.isaac.market_hub.controllers;
 
 import com.isaac.market_hub.dtos.ProductDTO;
 import com.isaac.market_hub.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO newProduct) {
+    public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO newProduct) {
         ProductDTO created = productService.create(newProduct);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(created.getId())
