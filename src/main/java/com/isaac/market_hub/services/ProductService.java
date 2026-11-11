@@ -3,12 +3,15 @@ package com.isaac.market_hub.services;
 import com.isaac.market_hub.dtos.ProductDTO;
 import com.isaac.market_hub.entities.ProductEntity;
 import com.isaac.market_hub.repositories.ProductRepository;
+import com.isaac.market_hub.services.exeptions.DatabaseException;
 import com.isaac.market_hub.services.exeptions.ResourceNotFoundExecution;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.server.ResponseStatusException;
@@ -75,9 +78,14 @@ public class ProductService {
         return new ProductDTO(product);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         ProductEntity product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExecution("Produto não encontrado"));
-        productRepository.deleteById(id);
+        try {
+            productRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("A operação viola uma restrição de integridade dos dados.");
+
+        }
     }
 }
