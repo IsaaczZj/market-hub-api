@@ -3,12 +3,14 @@ package com.isaac.market_hub.services;
 import com.isaac.market_hub.dtos.ProductDTO;
 import com.isaac.market_hub.entities.ProductEntity;
 import com.isaac.market_hub.repositories.ProductRepository;
+import com.isaac.market_hub.services.exeptions.ResourceNotFoundExecution;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -21,8 +23,9 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
+
         ProductEntity product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+                () -> new ResourceNotFoundExecution("Produto não encontrado"));
 
         return new ProductDTO(product);
     }
