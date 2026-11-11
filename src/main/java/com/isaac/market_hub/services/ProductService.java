@@ -52,7 +52,7 @@ public class ProductService {
     @Transactional
     public ProductDTO update(Long id, ProductDTO dto) {
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundExecution("Produto não encontrado"));
 
         if (dto.getName() != null) {
             product.setName(dto.getName());
@@ -77,7 +77,7 @@ public class ProductService {
 
     @Transactional
     public void delete(Long id) {
-        ProductEntity product = productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+        ProductEntity product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExecution("Produto não encontrado"));
         productRepository.deleteById(id);
     }
 }
